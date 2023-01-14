@@ -1,0 +1,15 @@
+{:component/type    [:web-server]
+ :component/system? false
+ :component/name    :web-server
+ ;;-----------------------------------------;;
+ :component/config  {:component/type       #ref [:component/type]
+                     :env                  :dev
+                     :port                 8080
+                     :host                 "0.0.0.0"
+                     :active-session-count 2
+                     :resource-path        "/public"
+                     :allowed-origins      {:creds           true
+                                            :allowed-origins ["http://localhost:5050"]}}
+ ;;-----------------------------------------;;
+ :component/deps    {:web-db :web-db
+                     :state  :state}}

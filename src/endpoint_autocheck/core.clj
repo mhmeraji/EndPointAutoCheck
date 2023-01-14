@@ -1,0 +1,1 @@
+(ns endpoint-autocheck.core)

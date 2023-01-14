@@ -1,0 +1,13 @@
+{:component/type    [:web-db :mongo]
+ :component/system? false
+ :component/name    :web-db
+ ;;-----------------------------------------;;
+ :component/config  {:component/type  #ref [:component/type]
+                     :connection-info {:host "127.0.0.1"
+                                       :port 27017}
+                     :db-name         "endpoint-autocheck"
+                     :username        "ep-web-dev"
+                     :password        "ep-web-dev-pass"}
+
+ ;;-----------------------------------------;;
+ :component/deps {}}
