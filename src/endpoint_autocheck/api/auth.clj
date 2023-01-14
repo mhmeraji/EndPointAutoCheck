@@ -64,13 +64,15 @@
 
 
 (defn- cookie-ring-adapter[request]
-  (assoc-in request [:headers "Authorization"]
-            (-> request :cookies (get "token") :value)))
-
+  (if (nil? (-> request (get-in [:headers "Authorization"])))
+    (assoc-in request [:headers "Authorization"]
+              (-> request :cookies (get "token") :value))
+    (->> request)))
 
 (defn- validate-request-token-and-identity [ctx db]
-  (let [token (-> ctx :request :cookies (get "token") :value)
-
+  (let [token (or
+                (-> ctx :request :cookies (get "token") :value)
+                (-> ctx (get-in [:request :headers "authorization"])))
 
         _ (when (nil? token)
             (buddy.auth/throw-unauthorized
@@ -300,7 +302,8 @@
      :enter (fn [ctx]
               (let [username (-> ctx :request :identity :username)
 
-                    token (-> ctx :request :cookies (get "token") :value)
+                    token (or (-> ctx :request :cookies (get "token") :value)
+                              (-> ctx (get-in [:request :headers "authorization"])))
 
                     _ (db.proto/remove-user-session-token!
                         db username token)

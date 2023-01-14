@@ -105,6 +105,7 @@
           previous-token-map (:tokens user)
           new-token-map      (filter #(not= token (:token %))
                                      previous-token-map)]
+
       (moncol/update
         db dbs-users {:username username}
         {mongopr/$set {:tokens new-token-map}})))

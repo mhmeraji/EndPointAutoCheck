@@ -11,6 +11,9 @@
   (insert-user! [db user-data]
     "Inserts a user using `user-data`, and sets password using `password`")
 
+
+
+
   (update-user-known-algs [db username algs]
     "Updates the `:algorithms-known` of the user with `username`")
 
