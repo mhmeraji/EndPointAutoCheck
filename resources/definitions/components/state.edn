@@ -5,4 +5,4 @@
  :component/config  {:component/type #ref [:component/type]}
 
  ;;-----------------------------------------;;
- :component/deps {}}
+ :component/deps {:web-db :web-db}}
