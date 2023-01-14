@@ -30,7 +30,7 @@
 ;;------------------------------------------------------------------;;
 
 ;; NOTE that this should move to a proper location
-(def secret "jwt-secret")
+(def secret "myjwtsecretpublickeywithextracha")
 
 ;;Utility
 (defn inside?
@@ -285,6 +285,7 @@
                   (assoc context :response
                          (-> (ring-resp/response {:status   "OK"
                                                   :username username
+                                                  :token    token-signed
                                                   :role     (:role user)})
                              (ring-resp/set-cookie
                                "token" token-signed
