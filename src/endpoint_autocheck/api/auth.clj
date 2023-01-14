@@ -20,7 +20,7 @@
 
    [ring.middleware.cookies :as ring-cookies]
 
-   [stellar.van-buren.web.db.protocol :as db.proto]
+   [endpoint-autocheck.db.protocol :as db.proto]
 
    [ring.util.response :as ring-resp]
 

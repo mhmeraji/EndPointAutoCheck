@@ -65,12 +65,12 @@
 
   ;; If you use HTTP/2 or ALPN, use the java-agent to pull in the correct alpn-boot dependency
 ;:java-agents [[org.mortbay.jetty.alpn/jetty-alpn-agent "2.0.5"]]
-  :profiles {:dev     {:aliases      {"run-dev" ["trampoline" "run" "-m" "stellar.van-buren.web.core/run-dev"]}
+  :profiles {:dev     {:aliases      {"run-dev" ["trampoline" "run" "-m" ]}
                        :global-vars  {*warn-on-reflection* true
                                       *assert*             true}
                        :plugins      [[jonase/eastwood "1.2.3"]]
                        :dependencies [[io.pedestal/pedestal.service-tools "0.5.10"]]}
-             :uberjar {:aot [stellar.van-buren.web.core]}}
+             :uberjar {:aot [endpoint-autocheck.core]}}
 
   :repositories [["releases"  {:url           "https://nexus.stellaramc.ir/repository/maven-releases/"
                                :username      :env/nexus_username

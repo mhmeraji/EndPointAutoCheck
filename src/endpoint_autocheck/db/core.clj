@@ -13,7 +13,7 @@
             [buddy.hashers :as hashers]
 
             [hermes.lib.component.core :as hermes.component]
-            [stellar.van-buren.web.db.protocol :as db.proto]))
+            [endpoint-autocheck.db.protocol :as db.proto]))
 
 ;;------------------------------------------------------------------;;
 ;;------------------------------------------------------------------;;

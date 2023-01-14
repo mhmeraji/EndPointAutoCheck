@@ -11,9 +11,7 @@
             [ring.util.response :as ring-resp]
             [clojure.string :as str]
 
-            ;; [stellar.van-buren.web.api.v1.routes :as v1]
             [endpoint-autocheck.api.auth :as auth]
-            ;; [stellar.van-buren.web.api.admin.routes :as admin]
 
             [taoensso.timbre :as timbre]))
 
