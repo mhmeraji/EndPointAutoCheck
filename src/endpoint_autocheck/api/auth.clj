@@ -5,7 +5,7 @@
    [clojure.string :as str]
 
    [buddy.auth :as buddy.auth]
-
+   [buddy.hashers :as hashers]
    [buddy.auth.middleware :as middleware]
    [buddy.auth.protocols :as bauth.proto]
    [buddy.auth.http :as buddy.http]
@@ -192,6 +192,47 @@
    :role        (:role user)
    :valid-until (str (tick/>> (tick/now)
                               (tick/new-duration 8 :hours)))})
+
+(defn register-interceptor [db]
+  (interceptor/interceptor
+    {:name  :register-interceptor
+     :enter (fn register [context]
+              (try
+                (let [{:keys
+                       [username
+                        max-session-count
+                        name
+                        role
+                        password]}
+                      (-> context :request :json-params)
+
+                      user-record
+                      {:name              name
+                       :username          username
+                       :password          (hashers/encrypt password)
+                       :role              role
+                       :max-session-count max-session-count}]
+
+                  (if (db.proto/user-exists? db username)
+                    (throw (ex-info "Username Already Exists"
+                                    {:username username
+                                     :name     name}))
+                    (db.proto/insert-user! db user-record))
+
+                  (assoc context :response
+                         (ring-resp/response
+                           {:status   "OK"
+                            :username username
+                            :role     role})))
+                (catch Exception e
+                  (timbre/error ["Caught An Error When Registering : " e])
+                  (let [e-message (ex-message e)
+                        e-data    (ex-data e)]
+                    (assoc context :response
+                           (ring-resp/bad-request
+                             (assoc e-data
+                                    :status "Couldn't Register User!"
+                                    :cause   e-message)))))))}))
 
 (defn login-interceptor [db http-omit-added-headers? ]
   (interceptor/interceptor

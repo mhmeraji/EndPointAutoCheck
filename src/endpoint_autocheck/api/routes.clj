@@ -20,7 +20,7 @@
 
 (defn- home-page
   [_]
-  (ring-resp/response "Hello World!"))
+  (ring-resp/response "Pong!"))
 
 (def log-everything-interceptor
   {:name  ::log-everything-interceptor
@@ -136,6 +136,9 @@
                        auth/auth-backend)
                      (body-params/body-params)]
      {:get `home-page}
+     ["/register"
+      {:post (auth/register-interceptor
+               web-db)}]
      ["/login"
       {:post (auth/login-interceptor
                web-db http-omit-added-headers?)}]

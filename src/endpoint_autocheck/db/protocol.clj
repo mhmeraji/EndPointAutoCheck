@@ -8,7 +8,7 @@
     "Checks to see if username is already taken by a user.
      Returns Boolean.")
 
-  (insert-user! [db user-data password]
+  (insert-user! [db user-data]
     "Inserts a user using `user-data`, and sets password using `password`")
 
   (update-user-known-algs [db username algs]

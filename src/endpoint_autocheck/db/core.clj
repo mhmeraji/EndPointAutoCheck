@@ -70,11 +70,8 @@
               (hashers/check password (:password user)))
         (dissoc user :password))))
 
-  (insert-user! [_ user-data password]
-    (moncol/insert db dbs-users (assoc
-                                  user-data
-                                  :password
-                                  (hashers/encrypt password))))
+  (insert-user! [_ user-data]
+    (moncol/insert db dbs-users user-data))
 
   (find-user-by-username [_ username]
     (let [user (moncol/find-one-as-map
@@ -313,6 +310,14 @@
 ;;------------------------------------------------------------------;;
 
 (comment
+
+  ;; db.users.insert({
+  ;;                  "name"              :        "Normal User",
+  ;;                  "username"          :        "user",
+  ;;                  "password"          :        "bcrypt+sha512$9004c81c66cb6d2f1e3fc5b2dd96224c$12$e64b01a096ee463c36e426f3c22d3aea85b9a79262cf3088",
+  ;;                  "role"              :        "USER",
+  ;;                  "max-session-count" :        1,
+  ;;                  });
 
   (def db "van-buren-web")
 
