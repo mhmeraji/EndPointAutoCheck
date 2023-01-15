@@ -1,0 +1,25 @@
+/target
+/classes
+/checkouts
+profiles.clj
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+/.lein-*
+/.nrepl-port
+/.prepl-port
+.hgignore
+.hg/
+.eastwood
+.clj-kondo/*
+.lsp/*
+.calva/*
+# out logs
+/log/*
+/logs/*
+*.log
+# docker/postgres/*.sql
+
+# undo-tree ?
+**/*.~undo-tree~

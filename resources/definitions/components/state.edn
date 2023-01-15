@@ -1,0 +1,8 @@
+{:component/type    [:web-state]
+ :component/system? false
+ :component/name    :web-state
+ ;;-----------------------------------------;;
+ :component/config  {:component/type #ref [:component/type]}
+
+ ;;-----------------------------------------;;
+ :component/deps {:web-db :web-db}}

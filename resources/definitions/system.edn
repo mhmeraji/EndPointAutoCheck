@@ -1,0 +1,11 @@
+{:component/type      [:endpoint-autocheck :v-1.0.0]
+ :component/system?   true
+ :component/namespace :ep-acheck
+ ;;-----------------------------------------;;
+ ;;-----------------------------------------;;
+ :component/sub-components
+ {:ep-acheck/web-db     #include "./components/web-db-mongo.edn"
+  :ep-acheck/web-server #include "./components/web-server.edn"
+  :ep-acheck/web-state  #include "./components/state.edn"}
+ ;;-----------------------------------------;;
+ }
