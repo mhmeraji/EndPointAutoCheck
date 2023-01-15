@@ -28,6 +28,7 @@
                  [tick "0.5.0-RC5"]
 
                  [clojure.java-time "0.3.3"]
+                 [org.clojure/core.async "1.3.618"]
 
                  [hermes.lib/component "1.0.0"]
 

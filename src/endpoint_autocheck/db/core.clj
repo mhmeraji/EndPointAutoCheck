@@ -121,22 +121,34 @@
       db dbs-users {:username username}
       {mongopr/$set {:algorithms-known algs}}))
 
-  (update-user-known-accs [_ username accs]
+  (add-endpoint [_ username ep-record]
     (moncol/update
       db dbs-users {:username username}
-      {mongopr/$set {:accounts-known accs}}))
+      {mongopr/$push
+       {:endpoints
+        ep-record}}))
 
-  (set-user-2fa-code! [_ username code set-time]
-    (moncol/update
-      db dbs-users {:username username}
-      {mongopr/$set {:code-for-2fa            code
-                     :error-count-2fa         0
-                     :initiation-time-for-2fa set-time}}))
+  (get-endpoint-s [_ username]
+    (-> (moncol/find-one-as-map db dbs-users {:username username})
+        :endpoints))
 
-  (increment-2fa-error-count! [_ username]
-    (moncol/update
-      db dbs-users {:username username}
-      {mongopr/$inc {:error-count-2fa 1}}))
+  (update-endpoint [component username ep-record]
+    (let [endpoints (->> username
+                         (db.proto/get-endpoint-s component)
+                         (remove #(= (:url %) (:url ep-record))))
+          endpoints (conj endpoints ep-record)]
+      (moncol/update
+        db dbs-users {:username username}
+        {mongopr/$set {:endpoints endpoints}})))
+
+  (get-endpoint [component username url]
+    (->> (db.proto/get-endpoint-s component username)
+         (filter #(= url (:url %)))
+         (first)))
+
+  (get-endpoints-count [component username]
+    (->> (db.proto/get-endpoint-s component username)
+         (count)))
 
   (register-user-login! [_ username user-ip user-agent time]
     (moncol/insert db dbs-user-activity {:activity "LOGIN"

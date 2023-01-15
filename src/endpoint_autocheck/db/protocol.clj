@@ -11,46 +11,6 @@
   (insert-user! [db user-data]
     "Inserts a user using `user-data`, and sets password using `password`")
 
-
-
-
-  (update-user-known-algs [db username algs]
-    "Updates the `:algorithms-known` of the user with `username`")
-
-  (update-user-known-accs [db username accs]
-    "Updates the `:accounts-known` of the user with `username`")
-
-  (find-user-by-username-password [db username password]
-    "Finds and returns a user matching given credentials, or `nil` if not found.")
-
-  (get-active-session-count [db username]
-    "Gets the active session counts by counting the number of live tokens in the database")
-
-  (find-user-by-username [db username]
-    "Finds and returns a user matching given username, or `nil` if not found.")
-
-  (block-user! [db username]
-    "Blocks user.")
-
-  (keep-n-newest-sessions [db username n]
-    "Keeps the N newest sessions on a user")
-
-  (update-user-session! [db username token token-valid-until token-ip]
-    "Adds session info to user record **upon successful login**")
-
-
-  (remove-user-session-token! [db username token]
-    "Removes token info from user record")
-
-  (update-user-password! [db username new-password password-update-time]
-    "Updates user password and marks `password-update-time` as its `:last-password-update`")
-
-  (set-user-2fa-code! [db username code set-time]
-    "Sets user's 2fa code.")
-
-  (increment-2fa-error-count! [db username]
-    "Increments number of error counts for 2fa for the user")
-
   (register-user-login! [db username user-ip user-agent time]
     "Adds a record of login for user.")
 
@@ -61,6 +21,64 @@
     [db username user-ip time]
     [db username user-ip time auto-initiated?]
     "Adds a record of login for user.")
+
+  (find-user-by-username-password [db username password]
+    "Finds and returns a user matching given credentials, or `nil` if not found.")
+
+  (get-active-session-count [db username]
+    "Gets the active session counts by counting the number of live tokens in the database")
+
+  (find-user-by-username [db username]
+    "Finds and returns a user matching given username, or `nil` if not found.")
+
+  (update-user-session! [db username token token-valid-until token-ip]
+    "Adds session info to user record **upon successful login**")
+
+  (keep-n-newest-sessions [db username n]
+    "Keeps the N newest sessions on a user")
+
+  (remove-user-session-token! [db username token]
+    "Removes token info from user record")
+
+  ;; Endpoints
+
+  (add-endpoint [db username ep-record]
+    "Add a new endpoint specification for the user")
+
+  (get-endpoint-s [db username]
+    "Gets the list of endpoints for the user")
+
+  (update-endpoint [db username ep-record]
+    "Add one endpiont to the user's list")
+
+  (get-endpoint [db username url]
+    "Get endpoint map for a specific url")
+
+  (get-endpoints-count [db username]
+    "Get the number of endpoints enlisted for a user")
+
+
+
+
+
+
+  (update-user-known-algs [db username algs]
+    "Updates the `:algorithms-known` of the user with `username`")
+
+  (update-user-known-accs [db username accs]
+    "Updates the `:accounts-known` of the user with `username`")
+
+  (block-user! [db username]
+    "Blocks user.")
+
+  (update-user-password! [db username new-password password-update-time]
+    "Updates user password and marks `password-update-time` as its `:last-password-update`")
+
+  (set-user-2fa-code! [db username code set-time]
+    "Sets user's 2fa code.")
+
+  (increment-2fa-error-count! [db username]
+    "Increments number of error counts for 2fa for the user")
 
   (get-user-auth-activity [db username]
     "Finds and returns user activity as registered by `register-user-login!` and `register-user-logout!`")

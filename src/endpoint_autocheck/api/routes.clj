@@ -13,7 +13,8 @@
 
             [endpoint-autocheck.api.auth :as auth]
 
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre]
+            [endpoint-autocheck.api.v1.routes :as v1]))
 
 ;;------------------------------------------------------------------;;
 ;;------------------------------------------------------------------;;
@@ -154,10 +155,7 @@
       ^:interceptors [(auth/authentication-interceptor web-db)
                       auth/authorization-interceptor
                       (ring-mw/multipart-params)]
-      ;; (v1/routes im-da web-db lobster-da aggregate-da)
-      ;; (admin/routes web-db im-da lobster-da sms-sender aggregate-da)
-      ;; (admin/ifb-routes web-db im-da lobster-da)
-      ]]]])
+      (v1/routes web-db)]]]])
 
 ;;------------------------------------------------------------------;;
 ;;------------------------------------------------------------------;;
