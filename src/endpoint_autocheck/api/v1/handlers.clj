@@ -102,29 +102,87 @@
     {:name  :get-endpoint-interceptor
      :enter (fn get-endpoint [context]
               (try
-                (let [username (-> context :request :identity :username)])
+                (let [username (-> context :request :identity :username)
+                      ep-s     (db.proto/get-endpoint-s db username)
+                      url-s    (->> ep-s
+                                    (map :url)
+                                    (into []))]
+                  (assoc context :response
+                         (ring-resp/response
+                           {:status   "OK"
+                            :username username
+                            :url      url-s})))
                 (catch Exception e
-                  ))
-              )}))
+                  (timbre/error ["Caught An Error While Getting Endpoints : " e])
+                  (let [e-message (ex-message e)
+                        e-data    (ex-data e)]
+                    (assoc context :response
+                           (ring-resp/bad-request
+                             (assoc e-data
+                                    :status "Couldn't Get Endpoints!"
+                                    :cause   e-message)))))))}))
 
 (defn get-report [db]
   (interceptor/interceptor
     {:name  :get-report-interceptor
      :enter (fn get-report [context]
-              (let [username (-> context :request :identity :username)])
               (try
+                (let [username      (-> context :request :identity :username)
+                      {:keys [url]} (-> context :request :json-params)
+                      ep-s          (db.proto/get-endpoint-s db username)
+                      ep            (->> ep-s
+                                         (filter #(= url (:url %)))
+                                         (first))]
+                  (if (nil? ep)
+                    (assoc context :response
+                           (ring-resp/bad-request
+                             {:url   url
+                              :cause "This url isn't registered for the user!"}))
+                    (assoc context :response
+                           (ring-resp/response
+                             (merge {:status   "OK"
+                                     :username username}
+                                    (dissoc ep :alerts :fail))))))
                 (catch Exception e
-                  ))
-              )}))
+                  (timbre/error ["Caught An Error While Getting Report : " e])
+                  (let [e-message (ex-message e)
+                        e-data    (ex-data e)]
+                    (assoc context :response
+                           (ring-resp/bad-request
+                             (assoc e-data
+                                    :status "Couldn't Get Report!"
+                                    :cause   e-message)))))))}))
 
 (defn get-alert [db]
   (interceptor/interceptor
     {:name  :get-alert-interceptor
      :enter (fn get-alert [context]
-              (let [username (-> context :request :identity :username)])
               (try
+                (let [username      (-> context :request :identity :username)
+                      {:keys [url]} (-> context :request :json-params)
+                      ep-s          (db.proto/get-endpoint-s db username)
+                      ep            (->> ep-s
+                                         (filter #(= url (:url %)))
+                                         (first))]
+                  (if (nil? ep)
+                    (assoc context :response
+                           (ring-resp/bad-request
+                             {:url   url
+                              :cause "This url isn't registered for the user!"}))
+                    (assoc context :response
+                           (ring-resp/response
+                             {:status   "OK"
+                              :username username
+                              :alerts   (:alerts ep)}))))
                 (catch Exception e
-                  ))
+                  (timbre/error ["Caught An Error While Getting Report : " e])
+                  (let [e-message (ex-message e)
+                        e-data    (ex-data e)]
+                    (assoc context :response
+                           (ring-resp/bad-request
+                             (assoc e-data
+                                    :status "Couldn't Get Report!"
+                                    :cause   e-message))))))
               )}))
 
 ;;------------------------------------------------------------------;;

@@ -16,11 +16,11 @@
   ["/v1"
    ["/endpoint"
     {:get  (handlers/get-endpoint web-db)
-     :post (handlers/add-endpoint web-db)}]
-   ["/report"
-    {:get (handlers/get-report web-db)}]
-   ["/alerts"
-    {:get (handlers/get-alert web-db)}]])
+     :post (handlers/add-endpoint web-db)}
+    ["/report"
+     {:get (handlers/get-report web-db)}]
+    ["/alerts"
+     {:get (handlers/get-alert web-db)}]]])
 
 ;;------------------------------------------------------------------;;
 ;;------------------------------------------------------------------;;
