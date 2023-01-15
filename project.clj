@@ -50,6 +50,21 @@
                  [com.fasterxml.jackson.core/jackson-core "2.13.2"]
                  [com.fasterxml.jackson.core/jackson-databind "2.13.2.2"]]
 
+  :exclusions [commons-logging
+               ch.qos.logback/logback-classic
+               com.fasterxml.jackson.dataformat/jackson-dataformat-yaml
+               com.fasterxml.jackson.core/jackson-databind
+               log4j
+               org.apache.logging.log4j/log4j
+               org.slf4j/slf4j-simple
+               org.slf4j/simple
+               org.slf4j/slf4j-jcl
+               org.slf4j/slf4j-nop
+               org.slf4j/slf4j-log4j12
+               dk.ative/docjure
+               org.slf4j/slf4j-log4j13
+               ]
+
   :resource-paths ["config", "resources"]
 
   :min-lein-version "2.0.0"

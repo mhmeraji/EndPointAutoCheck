@@ -12,6 +12,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     networks:
       - mongo
+      - db
     ports:
       - 27017:27017
 
@@ -28,6 +29,22 @@ services:
     networks:
       - mongo
 
+
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: epcheck-service
+    volumes:
+      - "${PWD}/../resources/definitions/:/var/configs"
+    command: "/var/configs/system.edn"
+    networks:
+      - db
+    ports:
+      - "6060:6060"
+
 networks:
   mongo:
+    driver: bridge
+  db:
     driver: bridge
